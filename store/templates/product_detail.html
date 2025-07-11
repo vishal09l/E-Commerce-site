@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  body { font-family: 'Urbanist', sans-serif; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in { animation: fadeIn 0.7s ease-out; }
+
+  .btn-primary {
+    background-color: #000;
+    color: white;
+  }
+
+  .btn-primary:hover { background-color: #333; }
+
+  .border-primary { border-color: #000; }
+  .text-primary { color: #000; }
+</style>
+
+<div class="max-w-7xl mx-auto px-6">
+  <a href="/" class="text-sm text-primary hover:underline flex items-center gap-1 mb-4">← Back to Products</a>
+</div>
+
+<div class="min-h-[80vh] max-w-7xl mx-auto mt-10 p-6 grid grid-cols-1 lg:grid-cols-2 gap-12 animate-fade-in">
+
+  <div class="flex flex-col gap-5">
+    <div class="w-full h-[550px] overflow-hidden rounded-2xl shadow-lg">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover rounded-2xl">
+    </div>
+    <div class="flex gap-4">
+      <img src="{{ product.image.url }}" class="h-24 w-24 object-cover rounded-xl border border-gray-300">
+      {% for image in product.images.all %}
+        {% if image.image.url != product.image.url %}
+        <img src="{{ image.image.url }}" class="h-24 w-24 object-cover rounded-xl border border-gray-300">
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="sticky top-24 self-start flex flex-col justify-between">
+    <div>
+      <h1 class="text-4xl font-semibold mb-2">{{ product.name }}</h1>
+      <p class="text-sm text-gray-500 mb-4">{{ product.category.name }}</p>
+
+      <div class="flex items-center gap-4 mb-6">
+        <p class="text-primary text-2xl font-semibold">₹{{ product.price }}</p>
+        <p class="text-gray-400 line-through text-sm">₹{{ product.price|add:"400" }}</p>
+        <span class="text-green-600 text-xs font-medium uppercase">25% Off</span>
+      </div>
+
+      <p class="text-gray-700 text-base mb-6">{{ product.description }}</p>
+
+      <h2 class="text-sm font-semibold mb-2">Select Size</h2>
+      <div class="flex flex-wrap gap-2 mb-6">
+        {% for size in sizes %}
+          {% if size.stock > 0 %}
+          <button class="border border-gray-300 px-4 py-2 rounded-lg hover:border-black transition text-sm">
+            {{ size.size }} {% if size.stock <= 3 %}<span class="text-red-600 text-xs">({{ size.stock }} left)</span>{% endif %}
+          </button>
+          {% else %}
+          <button class="border border-gray-200 px-4 py-2 rounded-lg text-gray-400 text-sm cursor-not-allowed" disabled>
+            {{ size.size }} - Out
+          </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="flex gap-4 mb-8">
+        <form method="POST" action="{% url 'add_to_cart' product.id %}">
+          {% csrf_token %}
+          <button class="btn-primary px-6 py-3 rounded-lg text-sm uppercase shadow-md w-full">Add to Bag</button>
+        </form>
+        <button class="border border-gray-300 px-6 py-3 rounded-lg text-sm hover:shadow-md">❤️ Wishlist</button>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <label class="block font-semibold text-sm mb-2">Delivery Options</label>
+      <div class="flex gap-2 mb-4">
+        <input type="text" placeholder="Enter Pincode" class="border border-gray-300 px-3 py-2 rounded text-sm w-48">
+        <button class="btn-primary px-4 py-2 rounded text-sm">Check</button>
+      </div>
+      <div class="text-sm text-gray-700 space-y-3">
+        <h3 class="font-semibold">Best Offers</h3>
+        <div class="flex gap-2 items-start">
+          <span class="text-green-600 text-lg">🎉</span>
+          <p><strong>30% OFF</strong> with code <strong>NORETURNIMPULS</strong></p>
+        </div>
+        <div class="flex gap-2 items-start">
+          <span class="text-blue-600 text-lg">💳</span>
+          <p>Extra 10% off on Cards</p>
+        </div>
+        <div class="flex gap-2 items-start">
+          <span class="text-gray-500 text-lg">↩️</span>
+          <p>Easy 7-Day Return</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

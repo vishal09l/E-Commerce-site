@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Fashion Banner Section -->
+<section class="relative">
+  <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c" alt="Fashion Collection" class="w-full h-auto">
+
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-center bg-black bg-opacity-30">
+    <h2 class="text-5xl md:text-6xl font-semibold uppercase tracking-wider text-white">Fashion Collection</h2>
+    <p class="mt-4 text-white text-sm md:text-base">Explore timeless & trendy styles for everyone</p>
+  </div>
+</section>
+
+
+<section class="py-24 px-4 max-w-7xl mx-auto">
+  <h2 class="text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-16">
+    Fashion Products
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+    {% for product in products %}
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-md group hover:shadow-xl transition-all relative">
+      <a href="{% url 'product_detail' product.id %}">
+        <div class="overflow-hidden rounded-t-2xl h-72">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500 ease-in-out">
+        </div>
+      </a>
+      <div class="p-6 flex flex-col gap-3">
+        <h3 class="text-lg font-medium uppercase tracking-wide text-gray-900">{{ product.name }}</h3>
+        <p class="text-sm text-gray-500 line-clamp-2">{{ product.description|truncatewords:15 }}</p>
+        <div class="flex flex-col gap-3 mt-4">
+          <p class="text-gray-900 font-semibold text-lg">₹{{ product.price }}</p>
+          <a href="{% url 'add_to_cart' product.id %}">
+            <button class="bg-black text-white text-xs uppercase px-5 py-3 rounded-full hover:bg-gray-800 transition w-full tracking-widest">
+              Add to Cart
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="col-span-4 text-center text-gray-500">No fashion products available.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

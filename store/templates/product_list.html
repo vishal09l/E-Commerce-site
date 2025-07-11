@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<section class="w-full h-[80vh] bg-cover bg-center relative" style="background-image: url('/media/products/your-image-1.png');">
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-center bg-black bg-opacity-30">
+    <h2 class="text-5xl md:text-7xl font-semibold uppercase tracking-wider text-white">All Fashion Picks</h2>
+    <a href="#featured-products" class="mt-6 inline-block border border-white text-white px-10 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition">
+      Explore Collection
+    </a>
+  </div>
+</section>
+
+<section class="py-20 px-4 max-w-7xl mx-auto">
+  <h2 class="text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-14">
+    Shop by Category
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+    {% for category in categories %}
+    <a href="?category={{ category.id }}" class="group block">
+      <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
+        <img src="{% if category.name == 'Men' %}
+                    https://bobbysfashions.com/wp-content/uploads/2018/05/Style-Accessories-for-Men.jpg
+                  {% elif category.name == 'Women' %}
+                    https://t3.ftcdn.net/jpg/04/63/74/54/240_F_463745476_fQ6EKEfofPQoXmv49AMNXcRUPsVVV3LL.jpg
+                  {% elif category.name == 'Kids' %}
+                    https://www.sandiegofamily.com/images/article-organizer/yr-2017/Toy_and_Product_reviews/toddler_review2.jpg
+                  {% elif category.name == 'Fashion' %}
+                    https://pimwp.s3-accelerate.amazonaws.com/2023/09/home-goods-repair.jpg
+                  {% else %}
+                    {% static 'images/default-category.jpg' %}
+                  {% endif %}"
+             alt="{{ category.name }}"
+             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
+        <div class="p-6 text-center">
+          <h3 class="text-base font-medium uppercase tracking-wide text-gray-900">
+            {{ category.name }}
+          </h3>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="featured-products" class="py-24 px-4 max-w-7xl mx-auto">
+  <h2 class="text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-16">
+    Featured Products
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+    {% for product in products %}
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-md group hover:shadow-xl transition-all relative">
+      <span class="absolute top-4 left-4 bg-black text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">
+        New
+      </span>
+      <a href="{% url 'product_detail' product.id %}">
+        <div class="overflow-hidden rounded-t-2xl h-72">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}"
+               class="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500 ease-in-out">
+        </div>
+      </a>
+      <div class="p-6 flex flex-col gap-3">
+        <h3 class="text-lg font-medium uppercase tracking-wide text-gray-900">{{ product.name }}</h3>
+        <p class="text-sm text-gray-500 line-clamp-2">{{ product.description|truncatewords:15 }}</p>
+        <div class="flex flex-col gap-3 mt-4">
+          <p class="text-gray-900 font-semibold text-lg">₹{{ product.price }}</p>
+          <a href="{% url 'add_to_cart' product.id %}">
+            <button class="bg-black text-white text-xs uppercase px-5 py-3 rounded-full hover:bg-gray-800 transition w-full tracking-widest">
+              Add to Cart
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="col-span-4 text-center text-gray-500">No products found.</p>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
