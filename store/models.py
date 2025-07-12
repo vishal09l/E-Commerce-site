@@ -8,16 +8,16 @@ class Category(models.Model):
         return self.name
 
 class Product(models.Model):
-    User=models.ForeignKey(User,on_delete=models.SET_NULL,null=True,blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=200)
     price = models.FloatField()
     description = models.TextField()
     image = models.ImageField(upload_to='products/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    stock = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
-
 
 class ProductSize(models.Model):
     SIZE_CHOICES = [
@@ -40,3 +40,19 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"{self.product.name} Image"
+
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=255, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.cart_id
+
+class CartItem(models.Model):  
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.product.name} ({self.quantity})"

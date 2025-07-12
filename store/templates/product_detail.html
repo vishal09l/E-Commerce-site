@@ -75,7 +75,11 @@
       <div class="flex gap-4 mb-8">
         <form method="POST" action="{% url 'add_to_cart' product.id %}">
           {% csrf_token %}
-          <button class="btn-primary px-6 py-3 rounded-lg text-sm uppercase shadow-md w-full">Add to Bag</button>
+          {% if product.stock <= 0 %}
+          <h5>out of stock </h5>
+          {% else %}
+            <button class="btn-primary px-6 py-3 rounded-lg text-sm uppercase shadow-md w-full">Add to Bag</button>
+          {% endif %}
         </form>
         <button class="border border-gray-300 px-6 py-3 rounded-lg text-sm hover:shadow-md">❤️ Wishlist</button>
       </div>
