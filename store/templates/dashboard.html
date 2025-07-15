@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - VUE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .sidebar {
+      background-color: #000;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+    }
+
+    .text-muted {
+      color: #bfbfbf;
+    }
+
+    .white-border {
+      border-color: #333;
+    }
+  </style>
+</head>
+<body class="bg-black text-white flex min-h-screen">
+
+ 
+  <aside class="sidebar w-64 p-6 hidden md:block">
+    <h2 class="text-2xl font-bold mb-8">VUE</h2>
+    <nav class="space-y-4">
+      <a href="/dashboard" class="block text-muted hover:text-white">Dashboard</a>
+      <a href="/product_list" class="block text-muted hover:text-white">Products</a>
+      <a href="/orders" class="block text-muted hover:text-white">Orders</a>
+      <a href="/users" class="block text-muted hover:text-white">Users</a>
+    </nav>
+  </aside>
+
+
+  <main class="flex-1 p-6 md:p-10">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-light">Welcome back, Admin</h1>
+    </div>
+
+   
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+      <div class="card p-5 rounded-xl border white-border">
+        <p class="text-muted text-sm">Total Products</p>
+        <h2 class="text-2xl font-semibold">{{ total_products }}</h2>
+      </div>
+      <div class="card p-5 rounded-xl border white-border">
+        <p class="text-muted text-sm">Users</p>
+        <h2 class="text-2xl font-semibold">{{ total_users }}</h2>
+      </div>
+      <div class="card p-5 rounded-xl border white-border">
+        <p class="text-muted text-sm">Cart Items</p>
+        <h2 class="text-2xl font-semibold">{{ total_cart_items }}</h2>
+      </div>
+      <div class="card p-5 rounded-xl border white-border">
+        <p class="text-muted text-sm">Revenue</p>
+        <h2 class="text-2xl font-semibold text-green-400">₹{{ total_revenue }}</h2>
+      </div>
+    </div>
+
+ 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="card p-6 rounded-xl border white-border">
+        <h3 class="text-lg mb-4">Sales Overview</h3>
+        <canvas id="salesChart"></canvas>
+      </div>
+      <div class="card p-6 rounded-xl border white-border">
+        <h3 class="text-lg mb-4">User Growth</h3>
+        <canvas id="userChart"></canvas>
+      </div>
+    </div>
+  </main>
+
+
+  <script>
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const userCtx = document.getElementById('userChart').getContext('2d');
+
+    new Chart(salesCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        datasets: [{
+          label: 'Sales',
+          data: [1000, 1800, 2400, 3000, 3500],
+          borderColor: 'white',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        },
+        scales: {
+          x: { ticks: { color: 'white' }, grid: { color: '#333' } },
+          y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+        }
+      }
+    });
+
+    new Chart(userCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        datasets: [{
+          label: 'Users',
+          data: [50, 120, 180, 250],
+          backgroundColor: 'white'
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        },
+        scales: {
+          x: { ticks: { color: 'white' }, grid: { color: '#333' } },
+          y: { ticks: { color: 'white' }, grid: { color: '#333' } }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -4,7 +4,22 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Product, Cart, CartItem
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.admin.views.decorators import staff_member_required
 
+@staff_member_required(login_url='/adminlogin/')
+def dashboard(request):
+    total_products = Product.objects.count()
+    total_users = User.objects.count()
+    total_cart_items = CartItem.objects.count()
+    total_revenue = sum(item.product.price * item.quantity for item in CartItem.objects.select_related('product'))
+
+    context = {
+        'total_products': total_products,
+        'total_users': total_users,
+        'total_cart_items': total_cart_items,
+        'total_revenue': total_revenue,
+    }
+    return render(request, 'dashboard.html', context)
 
 def get_cart_count(request):
     session_id = request.session.session_key
@@ -161,6 +176,23 @@ def product_detail(request, product_id):
         'sizes': sizes,
         'cart_item_count': get_cart_count(request),
     })
+
+def admin_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None and user.is_staff:
+            login(request, user)
+            return redirect('/dashboard/') 
+        else:
+            messages.error(request, "Invalid admin credentials")
+            return redirect('/admin-login/')
+
+    return render(request, "admin_login.html")
+
 
 
 def login_page(request):
