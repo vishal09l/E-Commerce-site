@@ -9,44 +9,18 @@
   }
 </style>
 
-<section class="w-full h-[80vh] bg-cover bg-center relative" style="background-image: url('/media/products/your-image-1.png');">
-  <div class="absolute inset-0 flex flex-col items-center justify-center text-center bg-black bg-opacity-30">
-    <h2 class="text-5xl md:text-7xl font-semibold uppercase tracking-wider text-white">All Fashion Picks</h2>
-    <a href="#featured-products" class="mt-6 inline-block border border-white text-white px-10 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition">
+<section class="relative w-full h-[90vh] overflow-hidden">
+  <img
+    src="https://static.zara.net/assets/public/4f9d/bffb/510344f788f7/738d23ab29a2/08779637066-h1/08779637066-h1.jpg?ts=1751983325465&w=1366"
+    alt="Hero" class="absolute inset-0 w-full h-full object-cover object-top z-0" />
+  <div class="absolute inset-0 bg-black/30 z-10 flex flex-col items-center justify-center text-center px-4">
+    <h2 class="text-5xl md:text-7xl font-light uppercase tracking-[0.25em] text-white">
+      All Fashion Picks
+    </h2>
+    <a href="#featured-products"
+      class="mt-6 inline-block border border-white text-white px-10 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition rounded-full">
       Explore Collection
     </a>
-  </div>
-</section>
-
-<section class="py-20 px-4 max-w-7xl mx-auto">
-  <h2 class="text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-14">
-    Shop by Category
-  </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-    {% for category in categories %}
-    <a href="?category={{ category.id }}" class="group block">
-      <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-        <img src="{% if category.name == 'Men' %}
-                    https://bobbysfashions.com/wp-content/uploads/2018/05/Style-Accessories-for-Men.jpg
-                  {% elif category.name == 'Women' %}
-                    https://t3.ftcdn.net/jpg/04/63/74/54/240_F_463745476_fQ6EKEfofPQoXmv49AMNXcRUPsVVV3LL.jpg
-                  {% elif category.name == 'Kids' %}
-                    https://www.sandiegofamily.com/images/article-organizer/yr-2017/Toy_and_Product_reviews/toddler_review2.jpg
-                  {% elif category.name == 'Fashion' %}
-                    https://pimwp.s3-accelerate.amazonaws.com/2023/09/home-goods-repair.jpg
-                  {% else %}
-                    {% static 'images/default-category.jpg' %}
-                  {% endif %}"
-             alt="{{ category.name }}"
-             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
-        <div class="p-6 text-center">
-          <h3 class="text-base font-medium uppercase tracking-wide text-gray-900">
-            {{ category.name }}
-          </h3>
-        </div>
-      </div>
-    </a>
-    {% endfor %}
   </div>
 </section>
 
@@ -57,13 +31,14 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
     {% for product in products %}
     <div class="bg-white border border-gray-200 rounded-2xl shadow-md group hover:shadow-xl transition-all relative">
-      <span class="absolute top-4 left-4 bg-black text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">
+      <span
+        class="absolute top-4 left-4 bg-black text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">
         New
       </span>
       <a href="{% url 'product_detail' product.id %}">
         <div class="overflow-hidden rounded-t-2xl h-72">
           <img src="{{ product.image.url }}" alt="{{ product.name }}"
-               class="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500 ease-in-out">
+            class="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500 ease-in-out">
         </div>
       </a>
       <div class="p-6 flex flex-col gap-3">
@@ -71,17 +46,61 @@
         <p class="text-sm text-gray-500 line-clamp-2">{{ product.description|truncatewords:15 }}</p>
         <div class="flex flex-col gap-3 mt-4">
           <p class="text-gray-900 font-semibold text-lg">₹{{ product.price }}</p>
-          <a href="{% url 'add_to_cart' product.id %}">
-            <button class="bg-black text-white text-xs uppercase px-5 py-3 rounded-full hover:bg-gray-800 transition w-full tracking-widest">
-              Add to Cart
-            </button>
-          </a>
+          {% if product.stock <= 0 %}
+            <h5 class="text-red-500 font-semibold text-sm text-center">Out of Stock</h5>
+          {% else %}
+            <a href="{% url 'add_cart' product.id %}">
+              <button
+                class="bg-black text-white text-xs uppercase px-5 py-3 rounded-full hover:bg-gray-800 transition w-full tracking-widest">
+                Add to Cart
+              </button>
+            </a>
+          {% endif %}
         </div>
       </div>
     </div>
     {% empty %}
     <p class="col-span-4 text-center text-gray-500">No products found.</p>
     {% endfor %}
+  </div>
+</section>
+
+<section class="bg-[#f9f9f9] py-24 px-6 relative overflow-hidden">
+  <h2 class="text-3xl md:text-4xl font-light text-center uppercase tracking-[0.25em] mb-20 text-gray-900">
+    What Our Customers Say
+  </h2>
+
+  <div class="absolute -top-10 -left-10 w-[300px] h-[300px] bg-gradient-to-br from-[#e5e5e5] via-white to-transparent rounded-full blur-3xl opacity-50 z-0">
+  </div>
+  <div class="absolute bottom-0 right-0 w-[250px] h-[250px] bg-gradient-to-tr from-[#ececec] via-white to-transparent rounded-full blur-2xl opacity-40 z-0">
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+
+    <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <div class="text-6xl text-black mb-4 leading-none opacity-20">“</div>
+      <p class="text-sm text-gray-800 mb-6 leading-relaxed">
+        Absolutely in love with the quality and design. Feels like luxury but still affordable.
+      </p>
+      <p class="text-[13px] font-semibold uppercase tracking-widest text-gray-500">– Riya M.</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <div class="text-6xl text-black mb-4 leading-none opacity-20">“</div>
+      <p class="text-sm text-gray-800 mb-6 leading-relaxed">
+        The styles are on point. Minimal, modern, and perfect for everyday fashion.
+      </p>
+      <p class="text-[13px] font-semibold uppercase tracking-widest text-gray-500">– Aman G.</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <div class="text-6xl text-black mb-4 leading-none opacity-20">“</div>
+      <p class="text-sm text-gray-800 mb-6 leading-relaxed">
+        Fast delivery, great packaging, and the fit is just wow. 10/10 will shop again.
+      </p>
+      <p class="text-[13px] font-semibold uppercase tracking-widest text-gray-500">– Priya K.</p>
+    </div>
+
   </div>
 </section>
 

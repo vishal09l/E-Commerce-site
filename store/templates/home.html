@@ -6,139 +6,258 @@
   html {
     scroll-behavior: smooth;
   }
-</style>
 
-<section class="w-full h-[85vh] bg-cover bg-center relative" style="background-image: url('/media/products/your-image.png');">
-  <div class="absolute inset-0 flex flex-col items-center justify-center text-center bg-black bg-opacity-30">
-    <h2 class="text-5xl md:text-7xl font-semibold uppercase tracking-wider text-white">New Season</h2>
-    <a href="product_list/" class="mt-6 inline-block border border-white text-white px-10 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition">
-      Discover Collection
-    </a>
-  </div>
-</section>
-
-<section class="py-20 px-4 max-w-7xl mx-auto">
-  <h2 class="text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-14">
-    Shop by Category
-  </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
-    {% for category in categories %}
-    <a href="?category={{ category.id }}" class="group block">
-      <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition">
-        <img src="{% if category.name == 'Men' %}
-                    https://bobbysfashions.com/wp-content/uploads/2018/05/Style-Accessories-for-Men.jpg
-                  {% elif category.name == 'Women' %}
-                    https://t3.ftcdn.net/jpg/04/63/74/54/240_F_463745476_fQ6EKEfofPQoXmv49AMNXcRUPsVVV3LL.jpg
-                  {% elif category.name == 'Kids' %}
-                    https://www.sandiegofamily.com/images/article-organizer/yr-2017/Toy_and_Product_reviews/toddler_review2.jpg
-                  {% elif category.name == 'Fashion' %}
-                    https://pimwp.s3-accelerate.amazonaws.com/2023/09/home-goods-repair.jpg
-                  {% else %}
-                    {% static 'images/default-category.jpg' %}
-                  {% endif %}"
-             alt="{{ category.name }}"
-             class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out">
-        <div class="p-6 text-center">
-          <h3 class="text-base font-medium uppercase tracking-wide text-gray-900">
-            {{ category.name }}
-          </h3>
-        </div>
-      </div>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-
-<div class="bg-gray-100 py-3 border-y border-gray-200 overflow-hidden">
-  <div class="flex whitespace-nowrap animate-marquee text-gray-800 font-medium tracking-wider text-sm">
-    <span class="mx-6">Free Shipping • Limited Edition • New Collections Arriving Now •</span>
-    <span class="mx-6">Free Shipping • Limited Edition • New Collections Arriving Now •</span>
-  </div>
-</div>
-
-<style>
-  @keyframes marquee {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
+  .zara-shadow {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   }
-  .animate-marquee {
-    animation: marquee 15s linear infinite;
+
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: scroll-left 20s linear infinite;
+  }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(100%);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
   }
 </style>
+<section class="w-full min-h-[100vh] bg-cover relative"
+  style="background-image: url('https://static.zara.net/assets/public/f1c7/8c39/413f4d52a211/8130ec4bde90/04786207420-h1/04786207420-h1.jpg?ts=1752132335971&w=1366'); background-position: center -150px;">
 
-<section class="py-24 px-4 max-w-7xl mx-auto">
-  <h2 class="text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-16">
-    Featured Products
-  </h2>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
-    {% for product in products %}
-    <div class="bg-white border border-gray-200 rounded-2xl shadow-md group hover:shadow-xl transition-all relative">
-      <span class="absolute top-4 left-4 bg-black text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">
-        New
-      </span>
-      <a href="{% url 'product_detail' product.id %}">
-        <div class="overflow-hidden rounded-t-2xl h-72">
-          <img src="{{ product.image.url }}" alt="{{ product.name }}"
-               class="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-500 ease-in-out">
-        </div>
-      </a>
-      <div class="p-6 flex flex-col gap-3">
-        <h3 class="text-lg font-medium uppercase tracking-wide text-gray-900">{{ product.name }}</h3>
-        <p class="text-sm text-gray-500 line-clamp-2">{{ product.description|truncatewords:15 }}</p>
-        <div class="flex flex-col gap-3 mt-4">
-          <p class="text-gray-900 font-semibold text-lg">₹{{ product.price }}</p>
-          <a href="{% url 'add_to_cart' product.id %}">
-            <button class="bg-black text-white text-xs uppercase px-5 py-3 rounded-full hover:bg-gray-800 transition w-full tracking-widest">
-              Add to Cart
-            </button>
-          </a>
-        </div>
-      </div>
-    </div>
-    {% empty %}
-    <p class="col-span-4 text-center text-gray-500">No products found.</p>
-    {% endfor %}
-  </div>
-</section>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
 
-<section class="py-20 px-4 max-w-5xl mx-auto text-center">
-  <h2 class="text-3xl md:text-4xl font-semibold uppercase tracking-wider text-gray-900 mb-14">
-    What Our Customers Say
-  </h2>
-  <div class="grid gap-12 md:grid-cols-3">
-    <div class="flex flex-col items-center">
-      <p class="text-gray-700 italic">"Absolutely love the quality and fit of the collection. Minimal and timeless!"</p>
-      <span class="mt-4 font-medium text-gray-900 uppercase tracking-wide">— Ayesha K.</span>
-    </div>
-    <div class="flex flex-col items-center">
-      <p class="text-gray-700 italic">"The customer service was impeccable. Fast delivery too!"</p>
-      <span class="mt-4 font-medium text-gray-900 uppercase tracking-wide">— Rahul S.</span>
-    </div>
-    <div class="flex flex-col items-center">
-      <p class="text-gray-700 italic">"My go-to boutique for sleek and modern pieces. Highly recommended."</p>
-      <span class="mt-4 font-medium text-gray-900 uppercase tracking-wide">— Zara P.</span>
-    </div>
-  </div>
-</section>
 
-<section class="py-20 px-4 max-w-7xl mx-auto">
-  <h2 class="text-3xl md:text-4xl font-semibold uppercase tracking-wider text-center text-gray-900 mb-14">
-    Style Inspiration
-  </h2>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <img src="https://static.zara.net/assets/public/748a/95a0/5b444916854c/e5294e13d7fc/08043746712-p/08043746712-p.jpg?ts=1751889435346&w=596" class="w-full h-full object-cover" alt="Gallery 1">
-    <img src="https://static.zara.net/assets/public/7a47/4082/3aac4a1c80a4/c6b8d2055693/08230939052-a1/08230939052-a1.jpg?ts=1751542895158&w=596" class="w-full h-full object-cover" alt="Gallery 2">
-    <img src="https://static.zara.net/assets/public/c12b/71e1/464541fda197/a732628456ce/09929132251-022-a1/09929132251-022-a1.jpg?ts=1751629837107&w=596" class="w-full h-full object-cover" alt="Gallery 3">
-    <img src="https://static.zara.net/assets/public/89fc/d1f8/59e647e481d3/ba7ff7ea3926/05029154172-a1/05029154172-a1.jpg?ts=1751542878976&w=596" class="w-full h-full object-cover" alt="Gallery 4">
-  </div>
-</section>
-
-<section class="py-16 px-4">
-  <div class="bg-black text-white py-16 rounded-xl flex flex-col items-center text-center">
-    <h2 class="text-4xl uppercase tracking-widest font-semibold">Timeless Pieces. Minimal Style.</h2>
-    <a href="#top" class="mt-6 inline-block border border-white text-white px-10 py-3 text-xs uppercase tracking-widest hover:bg-white hover:text-black transition">
+  <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pb-28">
+    <h2 class="text-white text-4xl md:text-6xl lg:text-7xl font-light tracking-[0.25em] uppercase drop-shadow-lg">
+      Unveil Your Style
+    </h2>
+    <p class="text-white text-sm md:text-base mt-4 max-w-xl drop-shadow-md">
+      Discover timeless fashion curated for elegance and confidence.
+    </p>
+    <a href="/product_list"
+      class="mt-8 inline-block border border-white text-white px-8 py-3 text-xs md:text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
       Shop Now
     </a>
   </div>
 </section>
+
+
+
+<section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-4 py-20 max-w-7xl mx-auto">
+  
+  <a href="/women" class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3] block">
+    <div class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3]">
+      <img
+        src="https://static.zara.net/assets/public/fb3b/e61b/478e461682c0/e039ea1c20c8/06164059427-a4/06164059427-a4.jpg?ts=1752244345772&w=596"
+        alt="Women"
+        class="w-full h-full object-top object-cover transform group-hover:scale-105 transition duration-500 ease-in-out" />
+      <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+        <h3 class="text-white text-xl md:text-2xl font-semibold uppercase tracking-[0.2em]">Women</h3>
+      </div>
+    </div>
+  </a>
+
+
+  <a href="/men" class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3] block">
+    <div class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3]">
+      <img
+        src="https://5.imimg.com/data5/SELLER/Default/2024/2/389108243/VO/CA/YP/156224526/zara-man-hoodies-1000x1000.png"
+        alt="Men"
+        class="w-full h-full object-top object-cover transform group-hover:scale-105 transition duration-500 ease-in-out" />
+      <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+        <h3 class="text-white text-xl md:text-2xl font-semibold uppercase tracking-[0.2em]">Men</h3>
+      </div>
+    </div>
+  </a>
+
+  <a href="/kids" class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3] block">
+    <div class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3]">
+      <img
+        src="https://static.zara.net/assets/public/3188/79cd/de454155be17/0407956a8900/03183580501-a1/03183580501-a1.jpg?ts=1752141844108&w=750"
+        alt="Kids"
+        class="w-full h-full object-top object-cover transform group-hover:scale-105 transition duration-500 ease-in-out" />
+      <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+        <h3 class="text-white text-xl md:text-2xl font-semibold uppercase tracking-[0.2em]">Kids</h3>
+      </div>
+    </div>
+  </a>
+
+
+  <a href="/fashion" class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3] block">
+    <div class="relative group overflow-hidden rounded-2xl shadow-lg aspect-[2/3]">
+      <img
+        src="https://static.zara.net/assets/public/78e2/cd44/e1894a83ae62/74468afd460b/image-landscape-fit-88d1f60e-0773-4150-8372-1985f91c275a-ca-es-ad_0/image-landscape-fit-88d1f60e-0773-4150-8372-1985f91c275a-ca-es-ad_0.jpg?ts=1749552062540&w=651"
+        alt="Fashion"
+        class="w-full h-full object-top object-cover transform group-hover:scale-105 transition duration-500 ease-in-out" />
+      <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+        <h3 class="text-white text-xl md:text-2xl font-semibold uppercase tracking-[0.2em]">Fashion</h3>
+      </div>
+    </div>
+  </a>
+</section>
+
+
+
+<div class="bg-black text-white py-3 px-6 rounded-md mx-4 mt-6 shadow-lg tracking-wider overflow-hidden">
+  <div class="marquee text-sm font-medium uppercase">
+    Big Sale On Fashion Picks! &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; Free Shipping Over ₹999 &nbsp;&nbsp;&nbsp; |
+    &nbsp;&nbsp;&nbsp; Limited Time Offer! &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; New Arrivals Just Dropped!
+  </div>
+</div>
+
+
+<section id="featured-products" class="py-24 px-4 max-w-7xl mx-auto">
+  <h2 class="text-4xl font-light uppercase tracking-widest text-center text-gray-900 mb-16">
+    Featured Products
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12">
+    {% for product in products %}
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm group hover:shadow-lg transition-all relative">
+      <span
+        class="absolute top-4 left-4 bg-black text-white text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">
+        New
+      </span>
+      <a href="{% url 'product_detail' product.id %}">
+        <div class="overflow-hidden rounded-t-2xl h-72">
+          <img src="{{ product.image.url|default_if_none:'/static/images/default-product.jpg' }}"
+            alt="{{ product.name }}"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out">
+        </div>
+      </a>
+      <div class="p-6 flex flex-col gap-3">
+        <h3 class="text-base font-medium uppercase tracking-wide text-gray-900">{{ product.name }}</h3>
+        <p class="text-sm text-gray-500 line-clamp-2">{{ product.description|truncatewords:15 }}</p>
+        <div class="flex flex-col gap-3 mt-4">
+  <p class="text-gray-900 font-semibold text-lg">₹{{ product.price }}</p>
+  <a href="{% url 'product_detail' product.id %}">
+    <button
+      class="bg-black text-white text-xs uppercase px-5 py-3 rounded-full hover:bg-gray-800 transition w-full tracking-widest">
+      View Details
+    </button>
+  </a>
+</div>
+
+    </div>
+  </div>
+  {% empty %}
+  <p class="col-span-4 text-center text-gray-500">No products found.</p>
+  {% endfor %}
+  </div>
+</section>
+
+<section class="w-full bg-[#0d0d0d] text-white py-14 md:py-16 text-center">
+  <h2 class="text-3xl md:text-4xl font-light tracking-wide mb-4 leading-snug">
+    Timeless Fashion, Elevated
+  </h2>
+  <p class="text-sm md:text-base text-gray-400 mb-6 max-w-xl mx-auto">
+    Understated elegance meets modern design. Explore curated pieces crafted for effortless luxury.
+  </p>
+  <a href="#featured-products"
+    class="inline-block border border-white px-6 py-2 text-xs uppercase tracking-widest font-medium hover:bg-white hover:text-black transition duration-300 rounded-full">
+    Shop Now
+  </a>
+</section>
+
+<section class="py-20 md:py-24 px-4 max-w-7xl mx-auto">
+  <h2 class="text-3xl md:text-4xl font-light uppercase text-center tracking-[0.25em] text-gray-900 mb-16">
+    Style Inspiration
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+
+    <div class="overflow-hidden rounded-2xl group shadow-md hover:shadow-xl transition-shadow duration-500">
+      <div class="relative">
+        <img
+          src="https://static.zara.net/assets/public/979b/0765/8e8446188a16/137ea851c6a0/04786241800-p/04786241800-p.jpg?ts=1752069576357&w=750"
+          alt="Style"
+          class="w-full h-[500px] object-cover transition-transform duration-700 ease-in-out group-hover:scale-105">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-500"></div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl group shadow-md hover:shadow-xl transition-shadow duration-500">
+      <div class="relative">
+        <img
+          src="https://static.zara.net/assets/public/3d65/822d/86724726b01a/4eaa04124548/05107261251-001-p/05107261251-001-p.jpg?ts=1752052737895&w=750"
+          alt="Style"
+          class="w-full h-[500px] object-cover transition-transform duration-700 ease-in-out group-hover:scale-105">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-500"></div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl group shadow-md hover:shadow-xl transition-shadow duration-500">
+      <div class="relative">
+        <img
+          src="https://static.zara.net/assets/public/5f9d/ccad/9b3b448d8f9b/ee190f1e8aa3/02731041710-p/02731041710-p.jpg?ts=1752046100894&w=750"
+          alt="Style"
+          class="w-full h-[500px] object-cover transition-transform duration-700 ease-in-out group-hover:scale-105">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-500"></div>
+      </div>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl group shadow-md hover:shadow-xl transition-shadow duration-500">
+      <div class="relative">
+        <img
+          src="https://static.zara.net/assets/public/362b/a70a/89aa4980a534/c0cc22120eca/08779637066-p/08779637066-p.jpg?ts=1751983324246&w=750"
+          alt="Style"
+          class="w-full h-[500px] object-cover transition-transform duration-700 ease-in-out group-hover:scale-105">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition duration-500"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="bg-[#f9f9f9] py-24 px-6 relative overflow-hidden">
+  <h2 class="text-3xl md:text-4xl font-light text-center uppercase tracking-[0.25em] mb-20 text-gray-900">
+    What Our Customers Say
+  </h2>
+
+  <div
+    class="absolute -top-10 -left-10 w-[300px] h-[300px] bg-gradient-to-br from-[#e5e5e5] via-white to-transparent rounded-full blur-3xl opacity-50 z-0">
+  </div>
+  <div
+    class="absolute bottom-0 right-0 w-[250px] h-[250px] bg-gradient-to-tr from-[#ececec] via-white to-transparent rounded-full blur-2xl opacity-40 z-0">
+  </div>
+
+  <div class="relative z-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+
+    
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <div class="text-6xl text-black mb-4 leading-none opacity-20">“</div>
+      <p class="text-sm text-gray-800 mb-6 leading-relaxed">
+        Absolutely in love with the quality and design. Feels like luxury but still affordable.
+      </p>
+      <p class="text-[13px] font-semibold uppercase tracking-widest text-gray-500">– Riya M.</p>
+    </div>
+
+    
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <div class="text-6xl text-black mb-4 leading-none opacity-20">“</div>
+      <p class="text-sm text-gray-800 mb-6 leading-relaxed">
+        The styles are on point. Minimal, modern, and perfect for everyday fashion.
+      </p>
+      <p class="text-[13px] font-semibold uppercase tracking-widest text-gray-500">– Aman G.</p>
+    </div>
+
+  
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 transition-transform duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <div class="text-6xl text-black mb-4 leading-none opacity-20">“</div>
+      <p class="text-sm text-gray-800 mb-6 leading-relaxed">
+        Fast delivery, great packaging, and the fit is just wow. 10/10 will shop again.
+      </p>
+      <p class="text-[13px] font-semibold uppercase tracking-widest text-gray-500">– Priya K.</p>
+    </div>
+
+  </div>
+</section>
+
 {% endblock %}

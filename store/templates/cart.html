@@ -4,83 +4,110 @@
 {% block content %}
 <section class="py-12 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    
+
+    <a href="{% url 'home' %}" class="text-sm text-gray-500 hover:text-black inline-block mb-8">
+      ← Back to Shop
+    </a>
+
     {% if not cart_items %}
     <div class="text-center py-20">
       <h2 class="text-2xl font-semibold text-gray-600">Your Shopping Cart is Empty</h2>
-      <a href="{% url 'home' %}" class="mt-6 inline-block bg-black text-white px-6 py-2 rounded-full shadow hover:bg-gray-800 transition">Continue Shopping</a>
+      <a href="{% url 'home' %}"
+         class="mt-6 inline-block bg-black text-white px-6 py-2 rounded-full shadow hover:bg-gray-800 transition">
+        Continue Shopping
+      </a>
     </div>
-    {% else %}
 
-    {% comment %} Set GST ₹50 manually {% endcomment %}
-    {% with gst=50 grand_total=total_amount|add:"50" %}
-    
+    {% else %}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      
-      <!-- Cart Items -->
+
       <div class="lg:col-span-2 bg-white rounded-2xl shadow p-6">
         <h2 class="text-xl font-semibold mb-6 border-b pb-3">Your Cart</h2>
-        
+
         <ul class="divide-y divide-gray-200">
           {% for cart_item in cart_items %}
           <li class="flex items-center justify-between py-6">
             <div class="flex items-center gap-4">
-              <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}" class="w-20 h-20 object-cover rounded-lg border">
+              <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}"
+                   class="w-20 h-20 object-cover rounded-lg border">
+
               <div>
-                <a href="{% url 'product_detail' cart_item.product.id %}" class="text-lg font-medium text-gray-800 hover:underline">
+                <a href="{% url 'product_detail' cart_item.product.id %}"
+                   class="text-lg font-medium text-gray-800 hover:underline">
                   {{ cart_item.product.name }}
                 </a>
+
+                {% if cart_item.size %}
+                <p class="text-sm text-gray-500">Size: {{ cart_item.size }}</p>
+                {% endif %}
+
                 <div class="mt-2 flex items-center gap-2">
-                  <button class="w-7 h-7 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-200 transition text-sm">-</button>
-                  <span class="w-8 text-center text-sm font-medium text-gray-800">{{ cart_item.quantity }}</span>
-                  <button class="w-7 h-7 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-200 transition text-sm">+</button>
+                  <a href="{% url 'remove_one_from_cart' cart_item.product.id %}?size={{ cart_item.size }}"
+                     class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 
+                            text-gray-600 hover:bg-gray-200 transition text-base font-semibold">
+                    −
+                  </a>
+
+                  <input type="text" value="{{ cart_item.quantity }}" readonly
+                         class="w-10 text-center border border-gray-300 rounded-md text-sm font-medium text-gray-800">
+
+                  <a href="{% url 'add_cart' cart_item.product.id %}"
+                     class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-200 transition text-base font-semibold">
+                    +
+                  </a>
                 </div>
+
                 <p class="text-sm text-gray-400 mt-1">₹{{ cart_item.product.price }} each</p>
               </div>
             </div>
             <div class="text-right">
-              <p class="text-lg font-semibold text-gray-800 mb-2">₹{{ cart_item.total }}</p>
-              <a href="{% url 'remove_from_cart' cart_item.product.id %}" class="text-sm text-red-500 hover:underline">Remove</a>
+              <p class="text-lg font-semibold text-gray-800 mb-2">
+                ₹{{ cart_item.sub_total }}
+              </p>
+              <a href="{% url 'remove_from_cart' cart_item.product.id %}"
+                 class="text-sm text-red-500 hover:underline">Remove</a>
             </div>
           </li>
           {% endfor %}
         </ul>
       </div>
-      
-      <!-- Order Summary -->
+
       <div class="bg-white rounded-2xl shadow p-6">
         <h3 class="text-lg font-semibold mb-4">Order Summary</h3>
         <div class="space-y-2 text-sm">
           <div class="flex justify-between">
             <span>Subtotal</span>
-            <span class="font-medium text-gray-800">₹{{ total_amount }}</span>
+            <span class="font-medium text-gray-800">₹{{ total }}</span>
           </div>
           <div class="flex justify-between">
             <span>GST</span>
-            <span class="font-medium text-gray-800">₹{{ gst }}</span>
+            <span class="font-medium text-gray-800">₹{{ tax }}</span>
           </div>
           <hr>
           <div class="flex justify-between text-base font-semibold text-black pt-2">
             <span>Grand Total</span>
-            <span>₹{{ grand_total }}</span>
+            <span>₹{{ grand }}</span>
           </div>
         </div>
 
         <div class="text-center mt-4">
-          <img src="https://github.com/dev-rathankumar/greatkart-course/blob/main/static/images/misc/payments.png?raw=true" alt="Payments" class="h-6 inline">
+          <img src="https://github.com/dev-rathankumar/greatkart-course/blob/main/static/images/misc/payments.png?raw=true"
+               alt="Payments" class="h-6 inline">
         </div>
 
         <div class="mt-6 space-y-3">
-          <a href="#" class="w-full inline-block bg-black text-white text-center py-2 rounded-full hover:bg-gray-800 transition">Proceed to Checkout</a>
-          <a href="{% url 'product_list' %}" class="w-full inline-block text-black border border-gray-300 text-center py-2 rounded-full hover:bg-gray-100 transition">Continue Shopping</a>
+          <a href="#"
+             class="w-full inline-block bg-black text-white text-center py-2 rounded-full hover:bg-gray-800 transition">
+            Proceed to Checkout
+          </a>
+          <a href="{% url 'product_list' %}"
+             class="w-full inline-block text-black border border-gray-300 text-center py-2 rounded-full hover:bg-gray-100 transition">
+            Continue Shopping
+          </a>
         </div>
       </div>
-
     </div>
-
-    {% endwith %}
     {% endif %}
-
   </div>
 </section>
 {% endblock %}
